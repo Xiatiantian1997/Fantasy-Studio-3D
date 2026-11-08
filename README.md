@@ -2,13 +2,15 @@
 
 > **状态：架构草案 v0.1（供 Grok 评审）**。当前仅有设计文档、数据接口样例及最小验证工具；**尚无**可用的全身模型、绑定姿势、Blender 自动导出或 ComfyUI 接入。
 
+> **软件定位更新（2026-11-08）**：两个代码仓库未来组成一个「幻真画室」用户入口，2D 主程序负责 UI；3D 专注 Blender 建模与结构控制导出。请阅读 **[3D 简洁操作界面方案](docs/ui-plan.md)** 和 **[2D 主程序产品规划](https://github.com/Xiatiantian1997/Fantasy-Studio-2D/blob/main/docs/product-plan.md)**。不要求用户直接操作骨骼、线框和节点图。
+>
 ## 项目定位
 
 这是私人「幻真画室」的独立 **3D 人体参考模块**：用已绑定骨骼的原创成年角色模型产生可靠的姿势、透视、深度、法线参考，辅助 **2D** 生图。第一目标不是摄影级建模，也不是完整游戏引擎。
 
 | 项目 | 仓库 | 负责内容 |
 | --- | --- | --- |
-| **Fantasy Studio 2D** | [2D-generate-beautiful-girl](https://github.com/Xiatiantian1997/2D-generate-beautiful-girl) | 三种画风、ComfyUI 生图、参考图与最终图像 |
+| **Fantasy Studio 2D** | [2D-generate-beautiful-girl](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) | 三种画风、ComfyUI 生图、参考图与最终图像 |
 | **Fantasy Studio 3D** | **本仓库 Fantasy-Studio-3D** | 成年人体参考、Rig、姿势预设、相机与控制图导出 |
 | 人脸研究 | [body](https://github.com/Xiatiantian1997/body) | 现有人脸模型与五官研究；不迁移、不覆盖 |
 | 科学交互 | [3d-scientific-interactions](https://github.com/Xiatiantian1997/3d-scientific-interactions) | 半导体/教学三维示例，继续独立 |
