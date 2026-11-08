@@ -15,7 +15,10 @@
     "image_x": "right",
     "image_y": "down",
     "coordinate_note": "Blender world joints projected through the same camera; actual matrix convention pending implementation.",
-    "focal_length_mm": 50
+    "focal_length_mm": 50,
+    "clip_near": 0.1,
+    "clip_far": 100,
+    "world_unit_meters": 1
   },
   "outputs": {
     "rgb": {
@@ -27,12 +30,20 @@
       "path": "depth.exr",
       "encoding": "linear-float-exr",
       "coordinate_space": "camera",
-      "units": "meters"
+      "units": "meters",
+      "depth_kind": "optical_axis_z",
+      "positive_direction": "away_from_camera",
+      "value_range": "linear, unclamped positive meters; background/invalid values require renderer-specific handling"
     },
     "normal": {
       "path": "normal.exr",
       "encoding": "linear-float-exr-xyz",
-      "coordinate_space": "camera"
+      "coordinate_space": "camera",
+      "normal_space": "camera",
+      "channel_order": "XYZ",
+      "value_range": "signed float [-1,1] on valid geometry pixels",
+      "color_space": "linear",
+      "camera_forward_axis": "-Z"
     },
     "pose": {
       "path": "pose-internal.json",
