@@ -53,6 +53,14 @@ def validate(manifest: dict, root: Path | None = None, check_files: bool = False
             errors.append("camera.projection invalid")
         if not isinstance(camera.get("camera_id"), str) or not camera["camera_id"]:
             errors.append("camera.camera_id missing")
+    if isinstance(camera, dict):
+        near, far = camera.get("clip_near"), camera.get("clip_far")
+        scale = camera.get("world_unit_meters")
+        if (type(near) not in (int, float) or type(far) not in (int, float)
+                or not 0 < near < far):
+            errors.append("camera.clip_near / clip_far must satisfy 0 < near < far")
+        if type(scale) not in (int, float) or scale <= 0:
+            errors.append("camera.world_unit_meters must be positive number")
     outputs = manifest.get("outputs")
     if not isinstance(outputs, dict):
         errors.append("outputs must be an object")
@@ -71,6 +79,24 @@ def validate(manifest: dict, root: Path | None = None, check_files: bool = False
                 continue
             if not info.get("encoding") or not info.get("coordinate_space"):
                 errors.append(f"outputs.{key} must declare encoding and coordinate_space")
+            if key == "depth":
+                for attr in ("depth_kind", "positive_direction", "value_range", "units"):
+                    if not info.get(attr):
+                        errors.append(f"outputs.depth.{attr} missing")
+                if info.get("depth_kind") not in ("optical_axis_z", "radial_distance"):
+                    errors.append("outputs.depth.depth_kind invalid")
+                if info.get("positive_direction") != "away_from_camera":
+                    errors.append("outputs.depth.positive_direction invalid")
+            elif key == "normal":
+                for attr in ("normal_space", "channel_order", "value_range", "color_space", "camera_forward_axis"):
+                    if not info.get(attr):
+                        errors.append(f"outputs.normal.{attr} missing")
+                if info.get("normal_space") not in ("camera", "world"):
+                    errors.append("outputs.normal.normal_space invalid")
+                if info.get("channel_order") != "XYZ" or info.get("color_space") != "linear":
+                    errors.append("outputs.normal channel order or color_space invalid")
+                if info.get("camera_forward_axis") not in ("-Z", "+Z"):
+                    errors.append("outputs.normal.camera_forward_axis invalid")
             if check_files:
                 payload = root.joinpath(info["path"])
                 if not payload.is_file():
