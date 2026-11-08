@@ -9,11 +9,11 @@
 | 项目 | 仓库 | 负责内容 |
 | --- | --- | --- |
 | **Fantasy Studio 2D** | [2D-generate-beautiful-girl](https://github.com/Xiatiantian1997/2D-generate-beautiful-girl) | 三种画风、ComfyUI 生图、参考图与最终图像 |
-| **Fantasy Studio 3D** | **本仓库 body-3D-build** | 成年人体参考、Rig、姿势预设、相机与控制图导出 |
+| **Fantasy Studio 3D** | **本仓库 Fantasy-Studio-3D** | 成年人体参考、Rig、姿势预设、相机与控制图导出 |
 | 人脸研究 | [body](https://github.com/Xiatiantian1997/body) | 现有人脸模型与五官研究；不迁移、不覆盖 |
 | 科学交互 | [3d-scientific-interactions](https://github.com/Xiatiantian1997/3d-scientific-interactions) | 半导体/教学三维示例，继续独立 |
 
-> 仓库 URL 暂保留旧名；上表是统一展示名称，未执行 GitHub 重命名。
+> GitHub 已改名为 `Fantasy-Studio-3D`，当前为公开仓库；不得上传私人素材或敏感模型。
 
 ## 第一版希望实现（尚未完成）
 
@@ -27,7 +27,7 @@
 ## 框架目录
 
 ```text
-body-3D-build/
+Fantasy-Studio-3D/
 ├── README.md
 ├── docs/
 │   ├── architecture.md       # 分工、阶段、数据流
@@ -54,9 +54,11 @@ body-3D-build/
 
 ## 从哪里看
 
-- [Grok 评审清单](docs/grok-review.md) —— 建议先看这个
+- [Grok 评审处理记录](docs/review-resolution.md) —— 已采纳与需要修正的意见
+- [基础模型候选](docs/base-model-candidates.md) —— 官方来源与选择条件
+- [Grok 初轮评审清单](docs/grok-review.md) —— 历史设计评审入口
 - [架构](docs/architecture.md)
 - [2D/3D 数据接口](docs/interface-v0.1.md)
 - [阶段计划](docs/roadmap.md)
 
-**当前无安装步骤。** 待模型来源、坐标规范和姿势导出方案经双方评审后再开始实现。
+**当前无安装步骤。** 设计评审已完成首轮，仍需先确定基础模型并实际验证姿势与导出；尚无可运行的 3D 全身系统。
