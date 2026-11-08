@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "export_id": "DEMO_pose01_cam_front",
+  "subject_id": "adult_reference_A",
+  "pose_id": "standing_neutral",
+  "frame": 1,
+  "status": "draft",
+  "demo_only": true,
+  "camera": {
+    "camera_id": "cam_front",
+    "projection": "perspective",
+    "width": 768,
+    "height": 1152,
+    "pixel_origin": "top-left",
+    "image_x": "right",
+    "image_y": "down",
+    "coordinate_note": "Blender world joints projected through the same camera; actual matrix convention pending implementation.",
+    "focal_length_mm": 50
+  },
+  "outputs": {
+    "rgb": {
+      "path": "rgb.png",
+      "encoding": "png-srgb",
+      "coordinate_space": "image-pixels"
+    },
+    "depth": {
+      "path": "depth.exr",
+      "encoding": "linear-float-exr",
+      "coordinate_space": "camera",
+      "units": "meters"
+    },
+    "normal": {
+      "path": "normal.exr",
+      "encoding": "linear-float-exr-xyz",
+      "coordinate_space": "camera"
+    },
+    "pose": {
+      "path": "pose-internal.json",
+      "encoding": "json",
+      "coordinate_space": "image-pixels",
+      "layout": "internal-v0.1"
+    },
+    "pose_preview": {
+      "path": "pose-preview.png",
+      "encoding": "png-srgb",
+      "coordinate_space": "image-pixels"
+    }
+  },
+  "notes": "Illustrative manifest only: no rendered files supplied; not yet ControlNet/OpenPose compatible."
+}
