@@ -56,7 +56,10 @@
         "pixel_origin",
         "image_x",
         "image_y",
-        "coordinate_note"
+        "coordinate_note",
+        "clip_near",
+        "clip_far",
+        "world_unit_meters"
       ],
       "properties": {
         "camera_id": {
@@ -99,6 +102,21 @@
         "orthographic_scale": {
           "type": "number",
           "exclusiveMinimum": 0
+        },
+        "clip_near": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Near clip in Blender scene units"
+        },
+        "clip_far": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Far clip in Blender scene units; must exceed clip_near"
+        },
+        "world_unit_meters": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Meters per Blender scene unit"
         }
       }
     },
@@ -116,10 +134,37 @@
           "$ref": "#/$defs/output"
         },
         "depth": {
-          "$ref": "#/$defs/output"
+          "allOf": [
+            {
+              "$ref": "#/$defs/output"
+            },
+            {
+              "type": "object",
+              "required": [
+                "depth_kind",
+                "positive_direction",
+                "value_range",
+                "units"
+              ]
+            }
+          ]
         },
         "normal": {
-          "$ref": "#/$defs/output"
+          "allOf": [
+            {
+              "$ref": "#/$defs/output"
+            },
+            {
+              "type": "object",
+              "required": [
+                "normal_space",
+                "channel_order",
+                "value_range",
+                "color_space",
+                "camera_forward_axis"
+              ]
+            }
+          ]
         },
         "pose": {
           "$ref": "#/$defs/output"
@@ -160,6 +205,41 @@
         },
         "layout": {
           "type": "string"
+        },
+        "depth_kind": {
+          "enum": [
+            "optical_axis_z",
+            "radial_distance"
+          ]
+        },
+        "positive_direction": {
+          "enum": [
+            "away_from_camera"
+          ]
+        },
+        "value_range": {
+          "type": "string",
+          "minLength": 3
+        },
+        "normal_space": {
+          "enum": [
+            "camera",
+            "world"
+          ]
+        },
+        "channel_order": {
+          "const": "XYZ"
+        },
+        "color_space": {
+          "enum": [
+            "linear"
+          ]
+        },
+        "camera_forward_axis": {
+          "enum": [
+            "-Z",
+            "+Z"
+          ]
         }
       }
     }
