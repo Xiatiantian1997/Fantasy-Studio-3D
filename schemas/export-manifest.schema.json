@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fantasy Studio 3D export manifest v0.1",
+  "description": "Draft metadata contract. Does not by itself prove Blender or ControlNet compatibility.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "export_id",
+    "subject_id",
+    "pose_id",
+    "frame",
+    "status",
+    "camera",
+    "outputs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "export_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{3,96}$"
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "pose_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "frame": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "validated"
+      ]
+    },
+    "demo_only": {
+      "type": "boolean"
+    },
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "camera_id",
+        "projection",
+        "width",
+        "height",
+        "pixel_origin",
+        "image_x",
+        "image_y",
+        "coordinate_note"
+      ],
+      "properties": {
+        "camera_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "projection": {
+          "enum": [
+            "perspective",
+            "orthographic"
+          ]
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 16384
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 16384
+        },
+        "pixel_origin": {
+          "const": "top-left"
+        },
+        "image_x": {
+          "const": "right"
+        },
+        "image_y": {
+          "const": "down"
+        },
+        "coordinate_note": {
+          "type": "string",
+          "minLength": 10
+        },
+        "focal_length_mm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "orthographic_scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rgb",
+        "depth",
+        "normal",
+        "pose"
+      ],
+      "properties": {
+        "rgb": {
+          "$ref": "#/$defs/output"
+        },
+        "depth": {
+          "$ref": "#/$defs/output"
+        },
+        "normal": {
+          "$ref": "#/$defs/output"
+        },
+        "pose": {
+          "$ref": "#/$defs/output"
+        },
+        "pose_preview": {
+          "$ref": "#/$defs/output"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "encoding",
+        "coordinate_space"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "encoding": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coordinate_space": {
+          "type": "string",
+          "minLength": 1
+        },
+        "units": {
+          "type": "string"
+        },
+        "layout": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
