@@ -28,6 +28,21 @@ class TestManifest(unittest.TestCase):
         data["camera"]["image_y"] = "up"
         self.assertTrue(any("image_y" in msg for msg in validate(data)))
 
+    def test_rejects_missing_depth_semantics(self):
+        data = copy.deepcopy(self.data)
+        del data["outputs"]["depth"]["depth_kind"]
+        self.assertTrue(any("depth_kind" in msg for msg in validate(data)))
+
+    def test_rejects_invalid_camera_clip(self):
+        data = copy.deepcopy(self.data)
+        data["camera"]["clip_near"] = data["camera"]["clip_far"]
+        self.assertTrue(any("clip_near" in msg for msg in validate(data)))
+
+    def test_rejects_unoriented_normals(self):
+        data = copy.deepcopy(self.data)
+        del data["outputs"]["normal"]["normal_space"]
+        self.assertTrue(any("normal_space" in msg for msg in validate(data)))
+
     def test_detects_missing_actual_payloads(self):
         errors = validate(self.data, ROOT / "examples", check_files=True)
         self.assertTrue(any("Missing payload" in msg for msg in errors))
