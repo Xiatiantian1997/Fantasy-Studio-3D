@@ -1,68 +1,57 @@
-# 幻真画室｜3D 人体支持模块
+# 幻真画室｜3D 人体模块
 
-> **状态：内部架构草案（已完成首轮评审，尚未实施建模）**。当前仅有设计文档、数据接口样例及最小验证工具；**尚无**可用的全身模型、绑定姿势、Blender 自动导出或 ComfyUI 接入。
+> **这是独立开发的 3D 人体与姿势技术仓库，不是第二个软件或新版软件。** 总体用户入口、作品和素材索引以及 2D/3D 协调由 [Fantasy Studio 总控](https://github.com/Xiatiantian1997/Fantasy-Studio-) 管理；生图引擎由 [Fantasy-Studio-2D](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) 管理。
 
-> **软件定位更新（2026-11-08）**：两个代码仓库未来组成一个「幻真画室」用户入口，2D 主程序负责 UI；3D 专注 Blender 建模与结构控制导出。请阅读 **[3D 简洁操作界面方案](docs/ui-plan.md)** 和 **[2D 主程序产品规划](https://github.com/Xiatiantian1997/Fantasy-Studio-2D/blob/main/docs/product-plan.md)**。不要求用户直接操作骨骼、线框和节点图。
->
-> **只有一个用户软件入口。** 此仓库仅负责 Blender 人体、骨骼、姿势和结构导出，不提供第二个独立的“幻真画室版本”。用户未来在 [Fantasy-Studio-2D 主程序](https://github.com/Xiatiantian1997/Fantasy-Studio-2D)中进入“3D 人体”功能。数据接口规范中的版本号只用于程序兼容性管理，不代表用户需要安装两套软件。
->
-## 项目定位
+**当前状态：** 已有设计方案、导出 JSON Schema、示例及基础校验脚本；**尚无完成的全身模型、五姿势验收、真实 Blender 导出或 2D ControlNet 联动**。
 
-这是唯一产品「幻真画室」的 **3D 人体支持模块**：用已绑定骨骼的原创成年角色模型产生可靠的姿势、透视、深度、法线参考，辅助 **2D** 生图。第一目标不是摄影级建模，也不是完整游戏引擎。
+## 本仓库专门负责什么
 
-| 项目 | 仓库 | 负责内容 |
-| --- | --- | --- |
-| **Fantasy Studio 2D** | [2D-generate-beautiful-girl](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) | 三种画风、ComfyUI 生图、参考图与最终图像 |
-| **Fantasy Studio 3D** | **本仓库 Fantasy-Studio-3D** | 成年人体参考、Rig、姿势预设、相机与控制图导出 |
-| 人脸研究 | [body](https://github.com/Xiatiantian1997/body) | 现有人脸模型与五官研究；不迁移、不覆盖 |
-| 科学交互 | [3d-scientific-interactions](https://github.com/Xiatiantian1997/3d-scientific-interactions) | 半导体/教学三维示例，继续独立 |
+- 可复用的原创**成年女性通用人体母版**，可逐步调整身体参数，不把一种身材认定为普遍标准。
+- 高质量基础网格与 Rig，检验站姿、侧身、坐姿、手臂上举、跪姿五个基础姿势。
+- 重点处理肩胸、腰腹、骨盆/臀腿连接的蒙皮和必要形变修正。
+- 未来支持可控相机、体型选择、多角度查看和简化的姿势操作。
+- 同一帧、同一相机输出 `RGB / Depth / Normal / Pose` 及配套 `manifest.json`，供 2D 绘图模块使用。
+- Blender 保留原始编辑能力；Three.js/GLB 轻量查看器待真实基础模型通过后再开发。
 
-> GitHub 已改名为 `Fantasy-Studio-3D`，当前为公开仓库；不得上传私人素材或敏感模型。
+**不负责：** 2D 生成、LoRA、最终画风、总体登录/作品历史、完整私人素材数据库、整个产品启动器。
 
-## 模块目标（尚未完成）
+## 与另外两个 GitHub 仓库的分工
 
-1. 从可编辑、已绑定成年女性基础模型开始，不从零造人体。
-2. 体型可调、保留正确形变；初期先做 5 个姿势：站立、侧身、坐姿、举手、跪姿。
-3. Blender 内先验证模型与动作，必要处使用权重修正/辅助骨骼/形态键。
-4. 同一姿势、同一相机、同一帧导出 RGB、Depth、Normal；姿势关键点投影到二维。
-5. 经明确版本约定，把控制图交给 2D 画室；**2D v1 目前还没有 ControlNet 接口**。
-6. 之后再考虑 Three.js 移动端查看器；并不把网页实时建模作为第一阶段要求。
+| GitHub | 职责 |
+| --- | --- |
+| [Fantasy-Studio-](https://github.com/Xiatiantian1997/Fantasy-Studio-) | **总控**：统一 UI、启动、素材与作品、模块交接 |
+| [Fantasy-Studio-2D](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) | **2D**：ComfyUI 生成、参考控制、三种画风 |
+| **本仓库 Fantasy-Studio-3D** | **3D**：人体/Rig/姿势/镜头/结构控制图 |
+| [body](https://github.com/Xiatiantian1997/body) | 旧人脸专项研究，单独保留、不覆盖 |
 
-## 框架目录
+总控设计中的用户可直接选姿势并送去 2D，但**该交互尚未真实接通**，并不是现有 Blender 功能。
 
-```text
-Fantasy-Studio-3D/
-├── README.md
-├── docs/
-│   ├── architecture.md       # 分工、阶段、数据流
-│   ├── interface-v0.1.md     # 2D/3D 交换格式
-│   ├── grok-review.md        # Grok 评审任务
-│   └── roadmap.md            # 分阶段验收
-├── schemas/
-│   └── export-manifest.schema.json
-├── examples/
-│   └── export-manifest.example.json
-├── tools/
-│   └── validate_manifest.py # 不依赖 Blender 的元数据检查工具
-└── tests/
-    └── test_manifest.py
-```
+## 当前设计和协议
 
-## 安全与数据
+- [3D 技术架构](docs/architecture.md)
+- [2D/3D 结构数据导出协议](docs/interface-v0.1.md)
+- [导出字段 JSON Schema](schemas/export-manifest.schema.json)
+- [形变与基础模型评审](docs/review-resolution.md)
+- [候选基础模型](docs/base-model-candidates.md)
+- [3D 操作体验建议](docs/ui-plan.md)
+- [阶段路线](docs/roadmap.md)
 
-- 原始人像素材、敏感私人参考、模型大文件及下载的第三方资产放**本机非 C 盘**，不提交 GitHub。
-- 本库只保存代码、规范、经许可公开的示例；敏感素材由独立工具/权限管理。
-- 不以“作者/用户声明成年”替代年龄证据；未明确为成年者不进入成人参考候选池。
-- 保存来源、许可状态与修改记录；个人使用不等于默认拥有公开传播权。
-- 保留原始 Blender 工程和原始数据；产物可重建，不覆盖旧人脸项目。
+**接口协议中的 `0.1.0` 是软件内部数据格式标识，不代表用户要安装另一软件版本。**
 
-## 从哪里看
+## 第一阶段的真实验收
 
-- [Grok 评审处理记录](docs/review-resolution.md) —— 已采纳与需要修正的意见
-- [基础模型候选](docs/base-model-candidates.md) —— 官方来源与选择条件
-- [Grok 初轮评审清单](docs/grok-review.md) —— 历史设计评审入口
-- [架构](docs/architecture.md)
-- [2D/3D 数据接口](docs/interface-v0.1.md)
-- [阶段计划](docs/roadmap.md)
+1. 选合法、权重质量可靠的基础人体，固定基准体型。
+2. 举手/坐姿/侧身压力测试；按实际问题调整权重、辅助骨骼或形态键。
+3. 保存五姿势和可重复相机参数，正/侧/斜视角审核形变。
+4. 校准深度、法线数值与方向，真实导出结构控制包。
+5. 由 2D 模块实测一次 ControlNet 生成，再由总控统一调用。
 
-**当前无安装步骤。** 设计评审已完成首轮，仍需先确定基础模型并实际验证姿势与导出；尚无可运行的 3D 全身系统。
+不提前制作内部器官、复杂肌肉模拟、全量皮肤微观纹理和完整游戏引擎。
+
+## 本地与 GitHub 数据边界
+
+- Blender 工程、基础网格、私人摄影/解剖参考、成人原档和大体积模型优先保存于非 C 盘本地目录。
+- 公开 GitHub 只保留代码、协议及适合公开的演示，不提交私人素材或第三方模型。
+- [body](https://github.com/Xiatiantian1997/body) 中已有的人脸模型是独立研究，不作为已验证的完整人体基模。
+
+**当前没有可运行的全身建模应用或 Windows 安装步骤。** 实现以 Blender 实测和真实导出为准。
