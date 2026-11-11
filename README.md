@@ -1,12 +1,14 @@
 # 幻真画室｜3D 人体模块
 
-> **这是独立开发的 3D 人体与姿势技术仓库，不是第二个软件或新版软件。** 总体用户入口、作品和素材索引以及 2D/3D 协调由 [Fantasy Studio 总控](https://github.com/Xiatiantian1997/Fantasy-Studio-) 管理；生图引擎由 [Fantasy-Studio-2D](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) 管理。
+**当前产品方案（2026-11-11 汇总）**：房间、模特、衣柜、摄影机与微缩房间导航统一见[产品体验](https://github.com/Xiatiantian1997/Fantasy-Studio/blob/main/docs/product-ux.md)；近期三身材、固定姿势的成衣范围见[衣装方案](https://github.com/Xiatiantian1997/Fantasy-Studio/blob/main/docs/clothing-plan.md)。本仓库较早的 UI/评审说明不另行决定总体导航；实现状态仍须以代码和实测为准。
+
+> **这是独立开发的 3D 人体与姿势技术仓库，不是第二个软件或新版软件。** 总体用户入口、作品和素材索引以及 2D/3D 协调由 [Fantasy Studio 总控](https://github.com/Xiatiantian1997/Fantasy-Studio) 管理；生图引擎由 [Fantasy-Studio-2D](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) 管理。
 
 **当前状态：** 已有设计方案、导出 JSON Schema、示例及基础校验脚本；**尚无完成的全身模型、五姿势验收、真实 Blender 导出或 2D ControlNet 联动**。
 
 ## 本仓库专门负责什么
 
-- 可复用的原创**成年女性通用人体母版**，可逐步调整身体参数，不把一种身材认定为普遍标准。
+- 选用并适配可复用的**成年女性通用人体母版**，可逐步调整身体参数，不把一种身材认定为普遍标准。
 - 高质量基础网格与 Rig，检验站姿、侧身、坐姿、手臂上举、跪姿五个基础姿势。
 - 重点处理肩胸、腰腹、骨盆/臀腿连接的蒙皮和必要形变修正。
 - 未来支持可控相机、体型选择、多角度查看和简化的姿势操作。
@@ -19,7 +21,7 @@
 
 | GitHub | 职责 |
 | --- | --- |
-| [Fantasy-Studio-](https://github.com/Xiatiantian1997/Fantasy-Studio-) | **总控**：统一 UI、启动、素材与作品、模块交接 |
+| [Fantasy-Studio](https://github.com/Xiatiantian1997/Fantasy-Studio) | **总控**：统一 UI、启动、素材与作品、模块交接 |
 | [Fantasy-Studio-2D](https://github.com/Xiatiantian1997/Fantasy-Studio-2D) | **2D**：ComfyUI 生成、参考控制、三种画风 |
 | **本仓库 Fantasy-Studio-3D** | **3D**：人体/Rig/姿势/镜头/结构控制图 |
 | [body](https://github.com/Xiatiantian1997/body) | 旧人脸专项研究，单独保留、不覆盖 |
